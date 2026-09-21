@@ -140,18 +140,6 @@ Structured pruning is Han et al. (TASLP 2026) reproduced with its released recip
 - Cost is the wall-clock time to obtain the compressed model, excluding the shared teacher: pruning on one H200,
   the low-rank pipeline on one RTX 4090.
 
-Notes on reproduction:
-
-- The paper's checkpoints cannot be reproduced bit-exactly: their backward calibration sweep sampled its 600 chunks
-  per corpus without a fixed seed. This code seeds the sweep (`seed = 0`). With that, the deterministic path
-  (SVD-LLM) reproduces the paper's rank allocation on 139 of 150 matrices (the rest differ by one rounding step
-  of 8), and the sampled path (bi-directional) lands well inside the run-to-run spread of the original scripts.
-- Expect the parameter count within ±0.15 M (this code: 63.05 M at ρ = 5 vs. 63.11 M in the paper) and the macro
-  DER within ±0.3.
-- Reproduced end to end with this repository on unmodified DiariZen (commit 844f555), ρ = 5 with recovery:
-  AMI 15.26 / AISHELL-4 10.55 / AliMeeting 13.92 / RAMC 10.44 / VoxConverse 8.81 / MSDWild 16.80 / NOTSOFAR-1 21.47,
-  macro **13.89** (paper 13.97, teacher 13.94); truncation-free ρ = 5 encoder 63.05 M.
-- The paper's §3 states 8 s calibration windows for C_x; the code — and the published numbers — use 16 s.
 
 ## Pretrained models
 
