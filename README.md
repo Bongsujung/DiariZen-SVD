@@ -124,7 +124,7 @@ python scripts/recover.py --compressed exp/stage1/obdllm-r5/wavlm-large-ft-obdll
 DER (%) on seven corpora and their macro-average; Params / MACs are those of the WavLM encoder per second of audio.
 Structured pruning is Han et al. (TASLP 2026) reproduced with its released recipe on the same teacher and data.
 
-| System | Params | MACs | AMI | AISHELL-4 | AliMeeting | RAMC | VoxConverse | MSDWild | NOTSOFAR-1 | Macro | Cost | Speed-up GPU / CPU |
+| System | Params | MACs | AMI | AIS-4 | AliM | RAMC | VoxC | MSDW | NSF | Macro | Cost | Speed-up GPU / CPU |
 |:--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
 | WavLM-Large (teacher) | 315.45M | 17.70G | 14.81 | 10.36 | 14.86 | 10.91 | 9.04 | 16.49 | 21.12 | 13.94 | — | 1.00× / 1.00× |
 | Structured pruning 80 % | 63.11M | 3.70G | 14.68 | 9.91 | 13.01 | 11.10 | 8.68 | 16.49 | 21.17 | 13.58 | ≈145 h | 2.76× / 4.28× |
