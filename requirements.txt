@@ -1,0 +1,20 @@
+# Install this file FIRST, into a fresh venv, then DiariZen (see README).  Tested: Python 3.10, one RTX 4090.
+#
+# PyTorch is pinned here on purpose: neither DiariZen's requirements.txt nor its pyproject pins it, and a bare
+# `pip install torch` fetches the latest CUDA build, which DiariZen (and pyannote.audio 3.1.1) does not support.
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.1.1+cu121
+torchaudio==2.1.1+cu121
+
+numpy==1.26.4        # DiariZen's pin
+soundfile            # calibration audio loading
+tensorboard          # recovery training curves (scripts/recover.py)
+toml                 # conf/run.toml (scripts/_config.py)
+intervaltree         # dscore (DER scoring); its submodule ships code only
+
+# Optional, per feature:
+deepspeed==0.12.6    # FlopsProfiler, only for scripts/bench_macs.py; newer releases need torch >= 2.4
+matplotlib>=3.7      # only for figures/
+
+# Provided by the DiariZen install, not listed here: diarizen (editable), pyannote.audio 3.1.1 (from its
+# bundled pyannote-audio/), dscore (git submodule).

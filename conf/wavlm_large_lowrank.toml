@@ -1,0 +1,24 @@
+# Template written into every assembled experiment directory (see diarizen_svd/experiment.py:write_exp_scaffold).
+# Placeholders in braces are substituted; the model arguments are those of
+# recipes/diar_ssl/conf/wavlm_updated_conformer.toml (WavLM-Large + 4-block Conformer, powerset head).
+# `wavlm_src` points to a {config, state_dict} checkpoint; a low-rank checkpoint carries
+# `lowrank_ranks` / `cnn_lowrank_ranks` in its config and is loaded by the same code path.
+[meta]
+save_dir = "exp"
+
+[model]
+path = "diarizen_svd.nn.model.Model"
+[model.args]
+wavlm_src = "{WAVLM_SRC}"
+wavlm_layer_num = {WAVLM_LAYER_NUM}
+wavlm_feat_dim = {WAVLM_FEAT_DIM}
+attention_in = {ATTENTION_IN}
+ffn_hidden = {FFN_HIDDEN}
+num_head = {NUM_HEAD}
+num_layer = {NUM_LAYER}
+dropout = {DROPOUT}
+chunk_size = {CHUNK_SIZE}
+use_posi = {USE_POSI}
+output_activate_function = {OUTPUT_ACTIVATE_FUNCTION}
+selected_channel = {SELECTED_CHANNEL}
+max_speakers_per_chunk = {MAX_SPEAKERS_PER_CHUNK}

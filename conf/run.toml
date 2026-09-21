@@ -1,0 +1,51 @@
+# Single configuration for run_stage.sh.  Relative paths are resolved from the repository root.
+# Every value here is passed to the scripts as a command-line flag; run a script with --help to see it.
+
+[paths]
+teacher_diar = "pretrained/eend_wavlm_large_compound7_avg5.bin"   # DiariZen EEND checkpoint (dense WavLM-Large + head)
+wavlm_config = "pretrained/wavlm-large-converted.bin"             # converted pre-trained WavLM-Large; architecture config only
+data         = "data"                                             # data/<corpus>/{train,dev,eval,recover}, see data/README.md
+exp          = "exp"                                              # all outputs: exp/stage{0,1,2,3}/
+# evaluation only
+dscore       = "dscore"
+embedding    = "pretrained/pyannote/wespeaker-voxceleb-resnet34-LM/pytorch_model.bin"   # keep "pyannote/" in the path: pyannote picks its loader by substring, and a path without it is sent to the ONNX loader, which cannot read this .bin
+diarizen_hub = "pretrained/diarizen-wavlm-base-s80-md"          # any DiariZen Hugging Face model dir; only its plda/ is used (VBx clustering)
+
+[compress]                       # stage 1
+method           = "obdllm"      # obdllm (bi-directional whitened SVD, paper Eq. 4) | svdllm | fwsvd (Table 3 baselines)
+ratio            = 5             # compression ratio rho = P_full / P_lowrank
+# both can be overridden on the command line:  bash run_stage.sh 1 --method svdllm --ratio 5
+win_per_corpus   = 150           # 16 s windows per corpus for C_x
+chunk_per_corpus = 600           # 8 s chunks per corpus for C_g
+damp             = 1e-3          # Cholesky damping, fraction of the mean diagonal
+round_to         = 8             # linear-map ranks are multiples of this
+seed             = 0
+
+[recovery]                       # stage 2, applied to the [compress] model
+lora_rank      = 128
+lr             = 5e-5            # adapters and CNN factors
+head_lr        = 2e-5            # EEND head
+epochs_a       = 5
+epochs_b       = 5
+batch          = 16
+distill_lambda = 1.0
+distill_S      = "0,2,4,6,8,16,24"
+dev_subset     = 10              # recordings per corpus in the dev subset
+eval_every     = 2000
+avg_ckpts      = "B_ep01,B_ep02,B_ep03,B_ep04,B_ep05"
+
+[eval]                           # stages 1 and 2
+sets    = ["AMI", "AISHELL4", "AliMeeting", "RAMC", "VoxConverse", "MSDWild", "NOTSOFAR"]
+spk_min = 1
+spk_max = 20
+
+[bench]                          # stage 3
+pruned      = "config:wavlm_large_s80_md"   # released 80 % pruned architecture, for the Params / MACs / speed comparison
+gpu_batches = "1,2,4,8,16,32,64"
+cpu_batches = "1,2,4,8"
+gpu_iters   = 12
+cpu_iters   = 4
+cpu_threads = 8
+
+[env]
+cuda_visible_devices = "0"

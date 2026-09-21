@@ -1,0 +1,37 @@
+# Paths that must only match at the repository root are anchored with a leading slash: a bare
+# `data/*` would also be read as `diarizen_svd/data/*` by rsync, Docker and some packagers.
+# (Note: gitignore has no end-of-line comments, so every comment is on its own line.)
+
+# --- pipeline outputs and large assets; see README, "Assets" and "Pretrained models"
+# /exp/       everything run_stage.sh writes
+# /pretrained/  teacher, low-rank encoders, embedding model, PLDA hub
+# /data/*     corpus lists built by scripts/prepare_data.py
+/exp/
+/pretrained/
+/data/*
+!/data/README.md
+*.bin
+*.pt
+*.log
+
+# --- dependencies installed or linked next to the code
+# /DiariZen*/  an upstream clone placed inside the repository
+# /dscore      symlink to DiariZen/dscore; no trailing slash, so the link itself matches too
+/venv/
+/.venv/
+/DiariZen*/
+/dscore
+
+# --- the paper itself (figures/ is committed: the images of the paper live there)
+/*.pdf
+
+# --- Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# --- editors and OS
+.vscode/
+.idea/
+.DS_Store
