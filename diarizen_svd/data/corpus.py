@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Corpus bookkeeping for the seven-corpus compound set.
 
-Calibration and recovery are balanced *per corpus* rather than drawn from the pooled training list,
-because the compound set is dominated by MSDWild (2476 of 3981 training recordings).  Every helper
-here works on the Kaldi-style ``wav.scp`` lists of DiariZen ``recipes/diar_ssl/data``.
+Calibration and recovery are balanced per corpus rather than drawn from the pooled training list, 
+Every helper here works on the Kaldi-style ``wav.scp`` lists of DiariZen ``recipes/diar_ssl/data``.
 """
 import os
 import random

@@ -2,7 +2,7 @@
 """Low-rank (SVD-factorized) layers for a WavLM encoder, applied post hoc to a dense model.
 
 This module is self-contained: it does not touch the WavLM constructor, so a compressed encoder is
-a *dense* ``wav2vec2_model(**config)`` whose target layers are replaced after construction.  The
+a dense ``wav2vec2_model(**config)`` whose target layers are replaced after construction.  The
 checkpoint config carries only two extra keys, consumed by :func:`build_from_config` /
 ``diarizen_svd.nn.model.Model.load_wavlm``:
 
@@ -10,14 +10,12 @@ checkpoint config carries only two extra keys, consumed by :func:`build_from_con
                         [{"attention.q_proj": 96, ..., "feed_forward.output_dense": 64}, ...]
     cnn_lowrank_ranks : {conv layer index -> rank} for the CNN front-end
 
-The factors themselves are computed offline (diarizen_svd/compress/factorize.py; whitened SVD
-after SVD-LLM [Wang et al., ICLR 2025] and OBD-LLM [Li et al., 2026]) and loaded through the normal
+The factors themselves are computed offline (diarizen_svd/compress/factorize.py; whitened SVD after) and loaded through the normal
 state_dict; this file only defines the compressed forward passes.
 
     LowRankLinear : nn.Linear W (d_out x d_in)  ->  y = A (B x) + b,   A: d_out x r,  B: r x d_in
     LowRankConv1d : nn.Conv1d W (C_out x C_in x K) -> conv_A(1x1) ( conv_B(K) x ),
                     i.e. the im2col matrix (C_out x C_in K) factorized as A (C_out x r) B (r x C_in K)
-                    [Jaderberg et al., BMVC 2014; Zhang et al., TPAMI 2016; BALF, 2025]
 """
 from typing import Dict, List, Optional, Union
 

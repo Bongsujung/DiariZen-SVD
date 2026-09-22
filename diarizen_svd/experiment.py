@@ -3,13 +3,11 @@
 and writing the minimal experiment directory that DiariZen's ``infer_avg.py`` expects.
 
 This recipe is one branch of the DiariZen code base
-[Han et al., "Leveraging Self-Supervised Learning for Speaker Diarization", ICASSP 2025;
- https://github.com/BUTSpeechFIT/DiariZen].  It replaces the structured-pruning compression of
-``recipes/diar_ssl_pruning`` [Han et al., "Efficient and Robust Speaker Diarization via Structured
-Pruning of Self-Supervised Models", IEEE/ACM TASLP 34:1903-1914, 2026] with a post-hoc low-rank
-(SVD) factorization of the task-fine-tuned WavLM-Large encoder.  Everything downstream of the
-encoder -- the EEND head, the powerset loss [Plaquet & Bredin, Interspeech 2023], VBx clustering
-[Landini et al., CSL 2022] and DER scoring (dscore) -- is the unmodified DiariZen / pyannote.audio
+[https://github.com/BUTSpeechFIT/DiariZen].  It replaces the structured-pruning compression of
+``recipes/diar_ssl_pruning``  with a post-hoc low-rank (SVD) factorization of the 
+task-fine-tuned WavLM-Large encoder.  Everything downstream of the encoder 
+-- the EEND head, the powerset loss, VBx clustering and DER scoring (dscore)
+-- is the unmodified DiariZen / pyannote.audio
 pipeline; ``dataset.py`` and ``infer_avg.py`` are verbatim copies of DiariZen ``recipes/diar_ssl``.
 
 DiariZen itself is used unmodified.  The low-rank layers live in ``diarizen_svd/nn/lowrank.py`` and

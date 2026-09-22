@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """Checkpoint averaging over a recovery trajectory.
 
-Averaging is the standard DiariZen model-selection step (``infer_avg.py --avg_ckpt_num``,
-Han et al., ICASSP 2025); weight averaging along one training trajectory is analysed by Izmailov et
-al. [UAI 2018] and Wortsman et al. [ICML 2022].  The paper averages the five Phase-B epoch
-checkpoints written by ``scripts/recover.py``.
+The paper averages the five Phase-B epoch checkpoints written by ``scripts/recover.py``.
+
 """
 import torch
 

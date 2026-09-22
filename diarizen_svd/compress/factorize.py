@@ -6,13 +6,11 @@ the SVD; the rank allocation (allocate.py) and the factor construction (``to_fac
 
   input_whitened_svd   SVD(W L_x), C_x = L_x L_x^T           SVD-LLM  [Wang et al., ICLR 2025]
   two_sided_svd        SVD(L_g^T W L_x), C_g = L_g L_g^T      OBD-LLM  [Li et al., arXiv:2604.00821],
-                                                              GFWSVD   [Chekalina et al., arXiv:2505.17974]
   fisher_weighted_svd  SVD(D W), D = diag(sqrt(I_row))        FWSVD    [Hsu et al., ICLR 2022]
 
 The two-sided rule is the closed-form minimizer of the weighted Frobenius error
 ||L_g^T (W - W_r) L_x||_F, which under the K-FAC model H ~= C_x (x) C_g equals the second-order loss
-increase of the truncation [Friedland & Torokhti, SIAM J. Matrix Anal. Appl. 29(2):656-659, 2007;
-Allen et al., J. Amer. Statist. Assoc. 109(505):145-159, 2014].  With C_g = I it reduces to SVD-LLM.
+increase of the truncation. With C_g = I it reduces to SVD-LLM.
 
 Every rule returns a ``Spectrum`` whose left factor is already "un-whitened" on the output side, so
 the truncated pair is always  A = U_r sqrt(S_r),  B = sqrt(S_r) V_r^T R^{-1}  with R the right
@@ -68,7 +66,7 @@ def two_sided_svd(W: torch.Tensor, C_x: torch.Tensor, C_g: torch.Tensor, eps: fl
 
 
 def fisher_weighted_svd(W: torch.Tensor, I_row: torch.Tensor, clamp: float = 1e-6) -> Spectrum:
-    """FWSVD as published: SVD(D W) with D = diag(sqrt(I_row / mean)), no input statistics.
+    """FWSVD: SVD(D W) with D = diag(sqrt(I_row / mean)), no input statistics.
 
     W ~= D^{-1} U~_r S~_r V~_r^T.  Rows with I_row < clamp * mean are clamped (the reference code
     guards against zero-Fisher rows the same way).  The per-matrix normalization by the mean keeps
@@ -95,12 +93,9 @@ def to_factors(sp: Spectrum, r: int):
 
 
 def equal_norm_resplit(A: torch.Tensor, B: torch.Tensor):
-    """Re-split the pair so that ||A||_F = ||B||_F while A @ B is unchanged (gauge freedom of the pair).
+    """Re-split the pair so that ||A||_F = ||B||_F while A @ B is unchanged.
 
-    s = sqrt(||A|| / ||B||),  A <- A / s,  B <- B * s.  This is the equal-norm convention of
-    PiSSA [Meng et al., NeurIPS 2024] and RefLoRA [Zhang et al., NeurIPS 2025].  It is needed here
-    because the de-whitening inverse L_g^{-T} lands on A alone and, for a small-class discriminative
-    loss, makes ||A|| / ||B|| ~ 1e7; recovery fine-tuning from that split diverges (paper, Fig. 3)."""
+    s = sqrt(||A|| / ||B||),  A <- A / s,  B <- B * s (paper, Fig. 3)."""
     nA, nB = A.double().norm(), B.double().norm()
     s = (nA / nB).sqrt().item()
     return (A / s).to(A.dtype), (B * s).to(B.dtype), s

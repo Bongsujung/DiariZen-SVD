@@ -8,13 +8,6 @@ Every rank-one component i of matrix m carries
 and the budget  sum_m r_m cost_m <= P_full / rho - P_fixed  is filled greedily in decreasing order of
 value / price.  For a linear price this greedy order is the Lagrangian relaxation of the knapsack and
 is optimal for the stated value model.
-
-The mechanism follows BALF [Gonzalez et al., arXiv:2509.25136], which builds on the layer-wise rank
-selection of Zhang et al. [IEEE TPAMI 38(10):1943-1955, 2016] and Liebenwein et al. [NeurIPS 2021];
-the only difference is where the value comes from (BALF: retained input energy of SVD(W L_x);
-here: the spectrum of whichever rule factorize.py was run with).  Transformer and CNN matrices
-compete in the same budget (no separate quota), no rank floor is imposed (the effective floor is
-``round_to`` for linear maps), and every matrix is capped at its break-even rank.
 """
 from collections import defaultdict
 

@@ -13,10 +13,9 @@ Two statistics are collected on the compound training set, balanced over the sev
                                (full backward hooks).  Together with C_x this is the Kronecker-
                                factored (K-FAC) Hessian H ~= C_x (x) C_g [Martens & Grosse, ICML 2015;
                                Grosse & Martens, ICML 2016 for conv], the curvature model used by
-                               OBD-LLM [Li et al., arXiv:2604.00821] and GFWSVD [Chekalina et al.,
-                               arXiv:2505.17974].
+                               OBD-LLM [Li et al., arXiv:2604.00821] 
   I_row = sum_b sum_j (dL/dW_ij)^2   row sums of the empirical weight Fisher, for the FWSVD baseline
-                               [Hsu et al., ICLR 2022] "as published" (Eqs. 3 and 6 of that paper).
+                               [Hsu et al., ICLR 2022] (Eqs. 3 and 6 of that paper).
                                Note: FWSVD accumulates per-sample squared gradients; like the
                                reference implementations we accumulate per mini-batch.
 

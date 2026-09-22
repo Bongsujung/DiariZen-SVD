@@ -12,7 +12,7 @@ embedding    = "pretrained/pyannote/wespeaker-voxceleb-resnet34-LM/pytorch_model
 diarizen_hub = "pretrained/diarizen-wavlm-base-s80-md"          # any DiariZen Hugging Face model dir; only its plda/ is used (VBx clustering)
 
 [compress]                       # stage 1
-method           = "obdllm"      # obdllm (bi-directional whitened SVD, paper Eq. 4) | svdllm | fwsvd (Table 3 baselines)
+method           = "obdllm"      # obdllm (bi-directional whitened SVD, paper Eq. 4) | svdllm | fwsvd (Table 3)
 ratio            = 5             # compression ratio rho = P_full / P_lowrank
 # both can be overridden on the command line:  bash run_stage.sh 1 --method svdllm --ratio 5
 win_per_corpus   = 150           # 16 s windows per corpus for C_x

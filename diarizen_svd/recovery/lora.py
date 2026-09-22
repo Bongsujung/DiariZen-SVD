@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Sequential LoRA on the two factors of a low-rank layer (paper §2.6).
+"""Sequential LoRA on the two factors of a low-rank layer.
 
 Every compressed matrix is already a factor pair  W ~= W'_u W'_v  (LowRankLinear.lr_A / lr_B).
-Following the sequential low-rank update of SVD-LLM [Wang et al., ICLR 2025;
-github.com/AIoT-MLSys-Lab/SVD-LLM, "SVD-LLM (LoRA fine-tuning)"] the two factors are trained one
-after the other with LoRA adapters [Hu et al., ICLR 2022]:
+Following the sequential low-rank update of SVD-LLM [Wang et al., ICLR 2025;] 
+the two factors are trained one after the other with LoRA adapters:
 
     Phase A:  W'_u <- W'_u + B_u A_u   (W'_v frozen)      then merge
     Phase B:  W'_v <- W'_v + B_v A_v   (W'_u frozen)      then merge
